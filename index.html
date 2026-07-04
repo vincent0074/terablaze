@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
     <style>
+        /* ----- Reset & Base ----- */
         * {
             margin: 0;
             padding: 0;
@@ -35,6 +36,7 @@
             100% { background-position: 0% 50%; }
         }
 
+        /* ----- Glowing Orbs ----- */
         .orb {
             position: absolute;
             border-radius: 50%;
@@ -52,6 +54,7 @@
             100% { transform: translate(40px, 60px) scale(1.2); }
         }
 
+        /* ----- Main Glass Card ----- */
         .container {
             position: relative;
             z-index: 10;
@@ -72,6 +75,7 @@
         .container::-webkit-scrollbar-track { background: transparent; }
         .container::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
 
+        /* ----- Brand ----- */
         .brand {
             text-align: center;
             margin-bottom: 2rem;
@@ -102,6 +106,7 @@
             margin-top: -0.2rem;
         }
 
+        /* ----- Login Form ----- */
         .login-form {
             display: flex;
             flex-direction: column;
@@ -185,6 +190,7 @@
             margin-top: -0.3rem;
         }
 
+        /* ----- Dashboard ----- */
         .dashboard {
             display: none;
             animation: fadeSlide 0.8s cubic-bezier(0.16, 1, 0.3, 1);
@@ -220,6 +226,7 @@
         }
         .account-meta span strong { color: rgba(255, 255, 255, 0.7); font-weight: 600; }
 
+        /* Balance Card */
         .balance-card {
             background: linear-gradient(145deg, rgba(30, 27, 75, 0.8), rgba(20, 15, 50, 0.9));
             backdrop-filter: blur(8px);
@@ -267,6 +274,7 @@
             margin-left: 0.3rem;
         }
 
+        /* Action Buttons */
         .action-row {
             display: flex;
             gap: 0.8rem;
@@ -297,7 +305,7 @@
         }
         .action-btn.withdraw:hover { background: rgba(255, 255, 255, 0.15); transform: translateY(-2px); }
 
-        /* New Invest button - full width */
+        /* Invest Button */
         .invest-btn {
             width: 100%;
             padding: 0.9rem;
@@ -312,13 +320,30 @@
             background: linear-gradient(135deg, #f59e0b, #d97706);
             color: white;
             box-shadow: 0 8px 24px rgba(245, 158, 11, 0.3);
+            margin-bottom: 1rem;
+        }
+        .invest-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(245, 158, 11, 0.4); }
+
+        /* View Packages Button */
+        .view-packages-btn {
+            width: 100%;
+            padding: 0.9rem;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-family: inherit;
+            letter-spacing: 0.5px;
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.15);
             margin-bottom: 1.8rem;
         }
-        .invest-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 32px rgba(245, 158, 11, 0.4);
-        }
+        .view-packages-btn:hover { background: rgba(255, 255, 255, 0.15); transform: translateY(-2px); }
 
+        /* Transactions */
         .tx-header {
             display: flex;
             justify-content: space-between;
@@ -391,7 +416,97 @@
             color: #ffffff;
         }
 
-        /* Modal */
+        /* ----- Packages Section ----- */
+        .packages-section {
+            display: none;
+            animation: fadeSlide 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .packages-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        .packages-header h2 {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        .back-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.7);
+            padding: 0.4rem 1.2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+        }
+
+        .packages-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+            margin-bottom: 1.5rem;
+            max-height: 380px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        .packages-grid::-webkit-scrollbar { width: 3px; }
+        .packages-grid::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 10px; }
+
+        .package-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 1.2rem;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.2s;
+        }
+        .package-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+        .package-name {
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+        .package-price {
+            color: #fbbf24;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .deposit-to-buy-btn {
+            width: 100%;
+            padding: 0.9rem;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-family: inherit;
+            background: linear-gradient(135deg, #34d399, #059669);
+            color: white;
+            box-shadow: 0 8px 24px rgba(52, 211, 153, 0.3);
+            letter-spacing: 0.5px;
+        }
+        .deposit-to-buy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(52, 211, 153, 0.4);
+        }
+
+        /* ----- Modals ----- */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -435,6 +550,7 @@
             margin-bottom: 1.5rem;
         }
 
+        /* BTC Address */
         .btc-address {
             background: rgba(255, 255, 255, 0.06);
             border-radius: 16px;
@@ -483,7 +599,6 @@
             background: rgba(52, 211, 153, 0.2);
             border-color: #34d399;
             color: #34d399;
-            transition: all 0.3s ease;
         }
 
         .modal-input-group {
@@ -542,6 +657,59 @@
         }
         .modal-actions .cancel-btn:hover { background: rgba(255, 255, 255, 0.15); }
 
+        /* Invest Info Modal (custom) */
+        .invest-info-content {
+            text-align: center;
+        }
+        .invest-info-content .icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+        .invest-info-content .message {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        .invest-info-content .view-packages-modal-btn {
+            width: 100%;
+            padding: 0.9rem;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-family: inherit;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            box-shadow: 0 8px 24px rgba(245, 158, 11, 0.3);
+            margin-bottom: 0.8rem;
+        }
+        .invest-info-content .view-packages-modal-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(245, 158, 11, 0.4);
+        }
+        .invest-info-content .close-modal-btn {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-family: inherit;
+            background: rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .invest-info-content .close-modal-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+        }
+
+        /* Responsive */
         @media (max-width: 500px) {
             .container { padding: 1.5rem; border-radius: 32px; max-height: 98vh; }
             .brand h1 { font-size: 2.2rem; }
@@ -550,6 +718,7 @@
             .account-meta { flex-direction: column; gap: 0.3rem; }
             .modal-box { padding: 1.5rem; }
             .btc-row .address { font-size: 0.75rem; }
+            .packages-header h2 { font-size: 1.2rem; }
         }
     </style>
 </head>
@@ -559,6 +728,7 @@
     <div class="orb orb-3"></div>
 
     <div class="container" id="appContainer">
+        <!-- Brand -->
         <div class="brand">
             <div class="brand-icon">⚡</div>
             <h1>tera<span style="background: linear-gradient(135deg, #60a5fa, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">blaze</span></h1>
@@ -601,8 +771,11 @@
                 <button class="action-btn withdraw" id="withdrawBtn">− Withdraw</button>
             </div>
 
-            <!-- NEW INVEST BUTTON -->
+            <!-- Invest Button -->
             <button class="invest-btn" id="investBtn">🚀 Invest in Terablaze</button>
+
+            <!-- View Packages Button -->
+            <button class="view-packages-btn" id="viewPackagesBtn">📊 View Investment Packages</button>
 
             <div class="tx-header">
                 <span>Recent Transactions</span>
@@ -611,6 +784,18 @@
             <div class="tx-list" id="transactionList"></div>
 
             <button id="logoutBtn" class="logout-btn">Sign Out</button>
+        </div>
+
+        <!-- ===== PACKAGES SECTION ===== -->
+        <div id="packagesSection" class="packages-section">
+            <div class="packages-header">
+                <h2>📈 Investment Plans</h2>
+                <button class="back-btn" id="backFromPackagesBtn">← Back</button>
+            </div>
+            <div class="packages-grid" id="packagesGrid">
+                <!-- Rendered by JavaScript -->
+            </div>
+            <button class="deposit-to-buy-btn" id="depositToBuyBtn">💰 Deposit to buy packages</button>
         </div>
     </div>
 
@@ -640,11 +825,30 @@
         </div>
     </div>
 
+    <!-- ===== INVEST INFO MODAL (Balance too low) ===== -->
+    <div class="modal-overlay" id="investInfoModal">
+        <div class="modal-box">
+            <div class="invest-info-content">
+                <div class="icon">⚠️</div>
+                <div class="modal-title">Balance too low</div>
+                <div class="message">
+                    Balance too low for current investment plan.<br />
+                    Please review our packages below.
+                </div>
+                <button class="view-packages-modal-btn" id="viewPackagesModalBtn">📊 View Packages</button>
+                <button class="close-modal-btn" id="closeInvestInfoModal">Close</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         (function() {
             // --- DOM refs ---
             const loginSection = document.getElementById('loginSection');
             const dashboardSection = document.getElementById('dashboardSection');
+            const packagesSection = document.getElementById('packagesSection');
+            const packagesGrid = document.getElementById('packagesGrid');
+
             const loginForm = document.getElementById('loginForm');
             const usernameInput = document.getElementById('username');
             const passwordInput = document.getElementById('password');
@@ -658,15 +862,22 @@
             const txCount = document.getElementById('txCount');
             const depositBtn = document.getElementById('depositBtn');
             const withdrawBtn = document.getElementById('withdrawBtn');
-            const investBtn = document.getElementById('investBtn'); // new
+            const investBtn = document.getElementById('investBtn');
+            const viewPackagesBtn = document.getElementById('viewPackagesBtn');
+            const backFromPackagesBtn = document.getElementById('backFromPackagesBtn');
+            const depositToBuyBtn = document.getElementById('depositToBuyBtn');
 
-            // Modal
-            const modal = document.getElementById('depositModal');
+            // Modals
+            const depositModal = document.getElementById('depositModal');
             const depositAmountInput = document.getElementById('depositAmount');
             const confirmDepositBtn = document.getElementById('confirmDeposit');
             const cancelDepositBtn = document.getElementById('cancelDeposit');
 
-            // Copy button
+            const investInfoModal = document.getElementById('investInfoModal');
+            const viewPackagesModalBtn = document.getElementById('viewPackagesModalBtn');
+            const closeInvestInfoBtn = document.getElementById('closeInvestInfoModal');
+
+            // Copy
             const copyBtn = document.getElementById('copyBtcBtn');
             const btcAddress = 'bc1qjw5ltm7ae79t4nc00aksf08axzq0m79dv86fle';
 
@@ -681,17 +892,27 @@
                 { type: 'deposit', amount: 200, date: '3 July 2026 · 7:40' }
             ];
 
-            // --- Helper: Format currency ---
+            const packages = [
+                { name: 'Beginners', price: 2000 },
+                { name: 'Intermediate', price: 3000 },
+                { name: 'Advanced', price: 5000 },
+                { name: 'Pro', price: 10000 },
+                { name: 'Bronze', price: 50000 },
+                { name: 'Silver', price: 100000 },
+                { name: 'Gold', price: 250000 },
+                { name: 'Diamond', price: 500000 }
+            ];
+
+            // --- Helpers ---
             function formatCurrency(amount) {
                 return '$' + amount.toFixed(2);
             }
 
-            // --- Render UI ---
+            // --- Render ---
             function renderDashboard() {
                 balanceDisplay.innerHTML = `${formatCurrency(balance)} <small>USD</small>`;
 
                 const sorted = [...transactions].sort((a, b) => b.date.localeCompare(a.date));
-
                 transactionList.innerHTML = '';
                 sorted.forEach(tx => {
                     const item = document.createElement('div');
@@ -714,11 +935,58 @@
                     `;
                     transactionList.appendChild(item);
                 });
-
                 txCount.textContent = `${transactions.length} entries`;
             }
 
-            // --- Add transaction ---
+            function renderPackages() {
+                packagesGrid.innerHTML = '';
+                packages.forEach(pkg => {
+                    const card = document.createElement('div');
+                    card.className = 'package-card';
+                    card.innerHTML = `
+                        <span class="package-name">${pkg.name}</span>
+                        <span class="package-price">${formatCurrency(pkg.price)}</span>
+                    `;
+                    packagesGrid.appendChild(card);
+                });
+            }
+
+            // --- Navigation ---
+            function showDashboard() {
+                loginSection.style.display = 'none';
+                dashboardSection.style.display = 'block';
+                packagesSection.style.display = 'none';
+                userDisplayName.textContent = FULL_NAME;
+                loginError.textContent = '';
+                renderDashboard();
+                closeAllModals();
+            }
+
+            function showPackages() {
+                dashboardSection.style.display = 'none';
+                packagesSection.style.display = 'block';
+                renderPackages();
+                closeAllModals();
+            }
+
+            function showLogin() {
+                loginSection.style.display = 'block';
+                dashboardSection.style.display = 'none';
+                packagesSection.style.display = 'none';
+                loginError.textContent = '';
+                passwordInput.value = '';
+                usernameInput.value = VALID_USERNAME;
+                loginBtn.disabled = false;
+                loginBtnText.innerHTML = '→ Sign In';
+                closeAllModals();
+            }
+
+            function closeAllModals() {
+                depositModal.classList.remove('active');
+                investInfoModal.classList.remove('active');
+            }
+
+            // --- Transactions ---
             function addTransaction(type, amount) {
                 if (amount <= 0) {
                     alert('Amount must be greater than zero.');
@@ -743,33 +1011,10 @@
                 return true;
             }
 
-            // --- Show/Hide sections ---
-            function showDashboard() {
-                loginSection.style.display = 'none';
-                dashboardSection.style.display = 'block';
-                userDisplayName.textContent = FULL_NAME;
-                loginError.textContent = '';
-                renderDashboard();
-            }
-
-            function showLogin() {
-                loginSection.style.display = 'block';
-                dashboardSection.style.display = 'none';
-                loginError.textContent = '';
-                passwordInput.value = '';
-                usernameInput.value = VALID_USERNAME;
-                modal.classList.remove('active');
-                // Reset button
-                loginBtn.disabled = false;
-                loginBtnText.innerHTML = '→ Sign In';
-            }
-
-            // --- Login with delay ---
+            // --- Login ---
             let loginTimeout = null;
-
-            function handleLogin(e) {
+            loginForm.addEventListener('submit', function(e) {
                 e.preventDefault();
-
                 if (loginBtn.disabled) return;
 
                 const username = usernameInput.value.trim();
@@ -780,7 +1025,6 @@
                 loginError.textContent = '';
 
                 if (loginTimeout) clearTimeout(loginTimeout);
-
                 loginTimeout = setTimeout(() => {
                     if (username === VALID_USERNAME && password === VALID_PASSWORD) {
                         showDashboard();
@@ -793,29 +1037,37 @@
                     }
                     loginTimeout = null;
                 }, 3000);
-            }
-
-            loginForm.addEventListener('submit', handleLogin);
-
-            // --- Modal handlers ---
-            function openModal() {
-                depositAmountInput.value = '';
-                modal.classList.add('active');
-                copyBtn.textContent = '📋 Copy';
-                copyBtn.classList.remove('copied');
-            }
-
-            function closeModal() {
-                modal.classList.remove('active');
-            }
-
-            depositBtn.addEventListener('click', openModal);
-            cancelDepositBtn.addEventListener('click', closeModal);
-            modal.addEventListener('click', function(e) {
-                if (e.target === modal) closeModal();
             });
 
-            // --- Copy BTC address ---
+            // --- Logout ---
+            logoutBtn.addEventListener('click', function() {
+                showLogin();
+                if (loginTimeout) {
+                    clearTimeout(loginTimeout);
+                    loginTimeout = null;
+                }
+            });
+
+            // --- Deposit Modal ---
+            function openDepositModal() {
+                depositAmountInput.value = '';
+                depositModal.classList.add('active');
+                copyBtn.textContent = '📋 Copy';
+                copyBtn.classList.remove('copied');
+                closeInvestInfoModal.classList.remove('active');
+            }
+
+            cancelDepositBtn.addEventListener('click', function() {
+                depositModal.classList.remove('active');
+            });
+            depositModal.addEventListener('click', function(e) {
+                if (e.target === depositModal) depositModal.classList.remove('active');
+            });
+
+            depositBtn.addEventListener('click', openDepositModal);
+            depositToBuyBtn.addEventListener('click', openDepositModal);
+
+            // --- Copy BTC ---
             copyBtn.addEventListener('click', function() {
                 navigator.clipboard.writeText(btcAddress).then(() => {
                     this.textContent = '✅ Copied!';
@@ -829,25 +1081,19 @@
                 });
             });
 
-            // --- Confirm deposit ---
+            // --- Confirm Deposit ---
             confirmDepositBtn.addEventListener('click', function() {
                 const raw = depositAmountInput.value.trim();
-                if (raw === '') {
-                    alert('Please enter an amount.');
-                    return;
-                }
+                if (raw === '') { alert('Please enter an amount.'); return; }
                 const amount = parseFloat(raw);
-                if (isNaN(amount) || amount <= 0) {
-                    alert('Please enter a valid positive amount.');
-                    return;
-                }
+                if (isNaN(amount) || amount <= 0) { alert('Please enter a valid positive amount.'); return; }
                 addTransaction('deposit', amount);
                 setTimeout(() => {
-                    closeModal();
+                    depositModal.classList.remove('active');
                 }, 400);
             });
 
-            // --- Withdraw button ---
+            // --- Withdraw ---
             withdrawBtn.addEventListener('click', function() {
                 if (balance < 500) {
                     alert('Withdraw not available – balance too low.');
@@ -863,26 +1109,42 @@
                 }
             });
 
-            // --- NEW: Invest button ---
+            // --- Invest Button ---
             investBtn.addEventListener('click', function() {
                 if (balance < 500) {
-                    alert('Cannot invest in Terablaze – balance too low.');
+                    investInfoModal.classList.add('active');
                 } else {
                     alert('Investment feature coming soon!');
                 }
             });
 
-            // --- Logout ---
-            logoutBtn.addEventListener('click', function() {
-                showLogin();
-                if (loginTimeout) {
-                    clearTimeout(loginTimeout);
-                    loginTimeout = null;
-                }
+            // --- Invest Info Modal ---
+            viewPackagesModalBtn.addEventListener('click', function() {
+                investInfoModal.classList.remove('active');
+                showPackages();
             });
 
-            // --- Prefill login ---
+            closeInvestInfoBtn.addEventListener('click', function() {
+                investInfoModal.classList.remove('active');
+            });
+
+            investInfoModal.addEventListener('click', function(e) {
+                if (e.target === investInfoModal) investInfoModal.classList.remove('active');
+            });
+
+            // --- View Packages (Dashboard) ---
+            viewPackagesBtn.addEventListener('click', showPackages);
+
+            // --- Back from Packages ---
+            backFromPackagesBtn.addEventListener('click', showDashboard);
+
+            // --- Prefill ---
             usernameInput.value = VALID_USERNAME;
+
+            // --- Initial state: login visible ---
+            loginSection.style.display = 'block';
+            dashboardSection.style.display = 'none';
+            packagesSection.style.display = 'none';
         })();
     </script>
 </body>
