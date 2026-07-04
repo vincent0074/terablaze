@@ -397,19 +397,57 @@
             font-size: 0.9rem;
             margin-bottom: 1.5rem;
         }
+
+        /* BTC address row with copy button */
         .btc-address {
             background: rgba(255, 255, 255, 0.06);
             border-radius: 16px;
             padding: 0.8rem 1rem;
             border: 1px solid rgba(255, 255, 255, 0.08);
-            color: #fbbf24;
+            margin-bottom: 1.5rem;
+        }
+        .btc-address .label {
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.7rem;
+            display: block;
+            margin-bottom: 0.3rem;
+        }
+        .btc-row {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+        }
+        .btc-row .address {
             font-family: monospace;
             font-size: 0.9rem;
             word-break: break-all;
-            margin-bottom: 1.5rem;
-            text-align: center;
+            color: #fbbf24;
+            flex: 1;
+            min-width: 150px;
         }
-        .btc-address span { color: rgba(255, 255, 255, 0.3); font-family: 'Inter', sans-serif; font-size: 0.7rem; display: block; margin-bottom: 0.3rem; }
+        .copy-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.7);
+            padding: 0.4rem 0.9rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-family: inherit;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+        .copy-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: white;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        .copy-btn.copied {
+            background: rgba(52, 211, 153, 0.2);
+            border-color: #34d399;
+            color: #34d399;
+        }
 
         .modal-input-group {
             display: flex;
@@ -475,6 +513,7 @@
             .balance-amount { font-size: 2.4rem; }
             .account-meta { flex-direction: column; gap: 0.3rem; }
             .modal-box { padding: 1.5rem; }
+            .btc-row .address { font-size: 0.75rem; }
         }
     </style>
 </head>
@@ -542,8 +581,11 @@
             <div class="modal-sub">Send BTC to the address below, then enter the amount you're depositing.</div>
 
             <div class="btc-address">
-                <span>📤 BTC Address</span>
-                bc1qjw5ltm7ae79t4nc00aksf08axzq0m79dv86fle
+                <span class="label">📤 BTC Address</span>
+                <div class="btc-row">
+                    <span class="address" id="btcAddressDisplay">bc1qjw5ltm7ae79t4nc00aksf08axzq0m79dv86fle</span>
+                    <button class="copy-btn" id="copyBtcBtn">📋 Copy</button>
+                </div>
             </div>
 
             <div class="modal-input-group">
@@ -581,6 +623,10 @@
             const confirmDepositBtn = document.getElementById('confirmDeposit');
             const cancelDepositBtn = document.getElementById('cancelDeposit');
 
+            // Copy button
+            const copyBtn = document.getElementById('copyBtcBtn');
+            const btcAddress = 'bc1qjw5ltm7ae79t4nc00aksf08axzq0m79dv86fle';
+
             // --- Credentials ---
             const VALID_USERNAME = 'Christine';
             const VALID_PASSWORD = 'Angel0074';
@@ -588,7 +634,6 @@
 
             // --- Data State ---
             let balance = 200;
-            // Only one transaction: the $200 deposit on 3 July 2026 at 7:40
             let transactions = [
                 { type: 'deposit', amount: 200, date: '3 July 2026 · 7:40' }
             ];
@@ -602,7 +647,6 @@
             function renderDashboard() {
                 balanceDisplay.innerHTML = `${formatCurrency(balance)} <small>USD</small>`;
 
-                // Sort by date (newest first)
                 const sorted = [...transactions].sort((a, b) => b.date.localeCompare(a.date));
 
                 transactionList.innerHTML = '';
@@ -631,7 +675,7 @@
                 txCount.textContent = `${transactions.length} entries`;
             }
 
-            // --- Add transaction (internal) ---
+            // --- Add transaction ---
             function addTransaction(type, amount) {
                 if (amount <= 0) {
                     alert('Amount must be greater than zero.');
@@ -671,7 +715,6 @@
                 loginError.textContent = '';
                 passwordInput.value = '';
                 usernameInput.value = VALID_USERNAME;
-                // Close modal if open
                 modal.classList.remove('active');
             }
 
@@ -679,23 +722,36 @@
             function openModal() {
                 depositAmountInput.value = '';
                 modal.classList.add('active');
+                // Reset copy button text if it was changed
+                copyBtn.textContent = '📋 Copy';
+                copyBtn.classList.remove('copied');
             }
 
             function closeModal() {
                 modal.classList.remove('active');
             }
 
-            // Deposit button opens modal
             depositBtn.addEventListener('click', openModal);
-
-            // Cancel
             cancelDepositBtn.addEventListener('click', closeModal);
-            // Click outside to close (on overlay)
             modal.addEventListener('click', function(e) {
                 if (e.target === modal) closeModal();
             });
 
-            // Confirm deposit
+            // --- Copy BTC address ---
+            copyBtn.addEventListener('click', function() {
+                navigator.clipboard.writeText(btcAddress).then(() => {
+                    this.textContent = '✅ Copied!';
+                    this.classList.add('copied');
+                    setTimeout(() => {
+                        this.textContent = '📋 Copy';
+                        this.classList.remove('copied');
+                    }, 2500);
+                }).catch(() => {
+                    alert('Failed to copy address. Please select and copy it manually.');
+                });
+            });
+
+            // --- Confirm deposit ---
             confirmDepositBtn.addEventListener('click', function() {
                 const raw = depositAmountInput.value.trim();
                 if (raw === '') {
@@ -707,19 +763,16 @@
                     alert('Please enter a valid positive amount.');
                     return;
                 }
-                // Add deposit
                 addTransaction('deposit', amount);
                 closeModal();
             });
 
-            // Withdraw button
+            // --- Withdraw button ---
             withdrawBtn.addEventListener('click', function() {
-                // Check if balance >= 500
                 if (balance < 500) {
                     alert('Withdraw not available – balance too low.');
                     return;
                 }
-                // Allow withdrawal
                 const input = prompt('Enter withdrawal amount:', '100');
                 if (input === null) return;
                 const amount = parseFloat(input);
@@ -744,8 +797,6 @@
             });
 
             logoutBtn.addEventListener('click', showLogin);
-
-            // --- Prefill login ---
             usernameInput.value = VALID_USERNAME;
         })();
     </script>
