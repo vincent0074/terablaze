@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Terablaze · Sign In</title>
+    <!-- Google Font for clean look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet" />
+    <style>
+        /* ----- reset & base ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(145deg, #f0f2f8 0%, #e6e9f2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            margin: 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 460px;
+            background: #ffffff;
+            border-radius: 32px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08), 0 8px 24px rgba(0, 0, 0, 0.04);
+            padding: 2rem 2rem 2.5rem;
+            transition: all 0.2s ease;
+        }
+
+        /* ----- brand ----- */
+        .brand {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .brand h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #1a1a2e;
+            margin-bottom: 0.25rem;
+        }
+
+        .brand h1 span {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .brand p {
+            color: #6b6b80;
+            font-size: 0.95rem;
+            font-weight: 400;
+        }
+
+        /* ----- login form ----- */
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #2d2a44;
+            letter-spacing: 0.3px;
+        }
+
+        .form-group input {
+            padding: 0.9rem 1rem;
+            border: 1.5px solid #dfe2ed;
+            border-radius: 16px;
+            font-size: 1rem;
+            background: #fafbff;
+            transition: border 0.2s, box-shadow 0.2s;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .form-group input:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12);
+            background: #ffffff;
+        }
+
+        .form-group input::placeholder {
+            color: #a8aabb;
+            font-weight: 400;
+        }
+
+        .login-btn {
+            background: #4f46e5;
+            color: white;
+            font-weight: 700;
+            font-size: 1.05rem;
+            padding: 0.9rem;
+            border: none;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            margin-top: 0.5rem;
+            font-family: inherit;
+            letter-spacing: 0.5px;
+        }
+
+        .login-btn:hover {
+            background: #4338ca;
+        }
+
+        .login-btn:active {
+            transform: scale(0.98);
+        }
+
+        .error-msg {
+            color: #e11d48;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-align: center;
+            min-height: 1.6rem;
+            margin-top: -0.5rem;
+        }
+
+        /* ----- dashboard (hidden by default) ----- */
+        .dashboard {
+            display: none;
+            animation: fadeUp 0.4s ease;
+        }
+
+        @keyframes fadeUp {
+            0% { opacity: 0; transform: translateY(12px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .welcome {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #1a1a2e;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            letter-spacing: -0.3px;
+        }
+
+        .welcome strong {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* account balance card */
+        .balance-card {
+            background: linear-gradient(145deg, #1e1b3b, #2a2557);
+            color: white;
+            border-radius: 24px;
+            padding: 1.5rem 1.8rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 24px rgba(79, 70, 229, 0.25);
+        }
+
+        .balance-label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            opacity: 0.75;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .balance-amount {
+            font-size: 2.6rem;
+            font-weight: 700;
+            margin-top: 0.25rem;
+            letter-spacing: -0.5px;
+        }
+
+        .balance-amount small {
+            font-size: 1.4rem;
+            font-weight: 500;
+            opacity: 0.7;
+            margin-left: 0.2rem;
+        }
+
+        /* transaction list */
+        .transaction-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #edf0f7;
+        }
+
+        .transaction-item:last-child {
+            border-bottom: none;
+        }
+
+        .tx-left {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .tx-type {
+            font-weight: 600;
+            color: #1a1a2e;
+        }
+
+        .tx-type .deposit-badge {
+            display: inline-block;
+            background: #d1fae5;
+            color: #065f46;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.2rem 0.7rem;
+            border-radius: 30px;
+            margin-left: 0.5rem;
+            letter-spacing: 0.3px;
+        }
+
+        .tx-date {
+            font-size: 0.8rem;
+            color: #6b6b80;
+        }
+
+        .tx-amount {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #065f46;
+        }
+
+        .tx-amount.positive {
+            color: #065f46;
+        }
+
+        .logout-btn {
+            background: transparent;
+            border: 1.5px solid #dfe2ed;
+            color: #4f46e5;
+            font-weight: 600;
+            padding: 0.6rem 1.5rem;
+            border-radius: 60px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+            margin-top: 1.5rem;
+            font-family: inherit;
+        }
+
+        .logout-btn:hover {
+            background: #f0f1ff;
+            border-color: #4f46e5;
+        }
+
+        /* helper */
+        .hidden {
+            display: none !important;
+        }
+
+        /* small screens */
+        @media (max-width: 500px) {
+            .container {
+                padding: 1.5rem;
+            }
+            .brand h1 {
+                font-size: 1.8rem;
+            }
+            .welcome {
+                font-size: 1.5rem;
+            }
+            .balance-amount {
+                font-size: 2.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="appContainer">
+        <!-- Brand -->
+        <div class="brand">
+            <h1>✨ tera<span>blaze</span></h1>
+            <p>Investment · Secure · Simple</p>
+        </div>
+
+        <!-- ===== LOGIN SECTION ===== -->
+        <div id="loginSection">
+            <form id="loginForm" class="login-form" autocomplete="off">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Enter your username" value="Christine" />
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter your password" value="Angel0074" />
+                </div>
+                <div id="loginError" class="error-msg"></div>
+                <button type="submit" class="login-btn">Sign In</button>
+            </form>
+        </div>
+
+        <!-- ===== DASHBOARD SECTION (hidden initially) ===== -->
+        <div id="dashboardSection" class="dashboard">
+            <!-- Welcome message: bold and one line -->
+            <div class="welcome">
+                Hi <strong id="userDisplayName">Christine Angel</strong>
+            </div>
+
+            <!-- Account balance -->
+            <div class="balance-card">
+                <div class="balance-label">Account Balance</div>
+                <div class="balance-amount">
+                    $200 <small>USD</small>
+                </div>
+            </div>
+
+            <!-- Recent transaction -->
+            <div style="margin-bottom: 0.25rem;">
+                <span style="font-weight: 600; font-size: 0.9rem; color: #2d2a44; letter-spacing: 0.3px;">RECENT TRANSACTION</span>
+            </div>
+            <div class="transaction-item">
+                <div class="tx-left">
+                    <span class="tx-type">
+                        Deposit
+                        <span class="deposit-badge">+$200</span>
+                    </span>
+                    <span class="tx-date">3 July 2026 · 7:40</span>
+                </div>
+                <div class="tx-amount positive">+$200.00</div>
+            </div>
+
+            <!-- Logout button -->
+            <button id="logoutBtn" class="logout-btn">Sign Out</button>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            // DOM refs
+            const loginSection = document.getElementById('loginSection');
+            const dashboardSection = document.getElementById('dashboardSection');
+            const loginForm = document.getElementById('loginForm');
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+            const loginError = document.getElementById('loginError');
+            const userDisplayName = document.getElementById('userDisplayName');
+            const logoutBtn = document.getElementById('logoutBtn');
+
+            // Hardcoded credentials (case‑sensitive)
+            const VALID_USERNAME = 'Christine';
+            const VALID_PASSWORD = 'Angel0074';
+            const FULL_NAME = 'Christine Angel'; // displayed on welcome
+
+            // Helper: show dashboard, hide login
+            function showDashboard() {
+                loginSection.style.display = 'none';
+                dashboardSection.style.display = 'block';
+                // set welcome name
+                userDisplayName.textContent = FULL_NAME;
+                // clear any error
+                loginError.textContent = '';
+            }
+
+            // Helper: show login, hide dashboard
+            function showLogin() {
+                loginSection.style.display = 'block';
+                dashboardSection.style.display = 'none';
+                // reset form error
+                loginError.textContent = '';
+                // (optional) clear password field for security
+                // passwordInput.value = '';
+            }
+
+            // Handle login form submission
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const username = usernameInput.value.trim();
+                const password = passwordInput.value.trim();
+
+                // Validate credentials (exact match, case‑sensitive)
+                if (username === VALID_USERNAME && password === VALID_PASSWORD) {
+                    // success
+                    showDashboard();
+                } else {
+                    loginError.textContent = 'Incorrect username or password. Please try again.';
+                    // shake effect? not necessary but keep simple
+                }
+            });
+
+            // Handle logout
+            logoutBtn.addEventListener('click', function() {
+                showLogin();
+                // clear password field for safety
+                passwordInput.value = '';
+                // optionally keep username filled
+                usernameInput.value = VALID_USERNAME; // prefilled for convenience
+            });
+
+            // Prefill username for demo (already in HTML value)
+            // On page load, ensure we start at login (dashboard hidden by CSS)
+            // If user is already logged in? we don't persist, so always show login.
+            // But we set dashboard display:none in CSS; loginSection is displayed.
+            // However, we want to show login by default, dashboard hidden.
+            // Already set in CSS: .dashboard { display: none; }
+            // But loginSection is visible. Good.
+
+            // Also, if someone wants to click "Sign out" and then come back, fine.
+
+            // Extra: if the user presses Enter on any field, it submits.
+
+            // For a nicer experience, if the user types correct credentials, it works.
+
+            console.log('Terablaze · ready');
+        })();
+    </script>
+</body>
+</html>
