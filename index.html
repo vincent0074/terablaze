@@ -191,7 +191,6 @@
             background-clip: text;
         }
 
-        /* Account meta */
         .account-meta {
             display: flex;
             gap: 1.5rem;
@@ -336,7 +335,6 @@
         .tx-amount.positive { color: #34d399; }
         .tx-amount.negative { color: #f87171; }
 
-        /* Logout */
         .logout-btn {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
@@ -356,6 +354,119 @@
             color: #ffffff;
         }
 
+        /* ----- Deposit Modal Overlay ----- */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+        .modal-overlay.active { display: flex; }
+
+        .modal-box {
+            background: rgba(20, 18, 40, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 32px;
+            max-width: 440px;
+            width: 100%;
+            padding: 2rem 2rem 2.2rem;
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.8);
+            animation: modalIn 0.3s ease;
+        }
+        @keyframes modalIn {
+            0% { opacity: 0; transform: scale(0.9) translateY(20px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .modal-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+        .modal-sub {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+        .btc-address {
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 0.8rem 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #fbbf24;
+            font-family: monospace;
+            font-size: 0.9rem;
+            word-break: break-all;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .btc-address span { color: rgba(255, 255, 255, 0.3); font-family: 'Inter', sans-serif; font-size: 0.7rem; display: block; margin-bottom: 0.3rem; }
+
+        .modal-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            margin-bottom: 1.5rem;
+        }
+        .modal-input-group label {
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .modal-input-group input {
+            padding: 0.9rem 1.2rem;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            outline: none;
+            font-family: inherit;
+        }
+        .modal-input-group input:focus {
+            border-color: #7c3aed;
+            box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.25);
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 0.8rem;
+        }
+        .modal-actions button {
+            flex: 1;
+            padding: 0.8rem;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            font-family: inherit;
+        }
+        .modal-actions .confirm-btn {
+            background: linear-gradient(135deg, #34d399, #059669);
+            color: white;
+            box-shadow: 0 8px 24px rgba(52, 211, 153, 0.3);
+        }
+        .modal-actions .confirm-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(52, 211, 153, 0.4); }
+        .modal-actions .cancel-btn {
+            background: rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .modal-actions .cancel-btn:hover { background: rgba(255, 255, 255, 0.15); }
+
         /* Responsive */
         @media (max-width: 500px) {
             .container { padding: 1.5rem; border-radius: 32px; max-height: 98vh; }
@@ -363,6 +474,7 @@
             .welcome { font-size: 1.6rem; }
             .balance-amount { font-size: 2.4rem; }
             .account-meta { flex-direction: column; gap: 0.3rem; }
+            .modal-box { padding: 1.5rem; }
         }
     </style>
 </head>
@@ -397,38 +509,52 @@
 
         <!-- ===== DASHBOARD ===== -->
         <div id="dashboardSection" class="dashboard">
-            <!-- Welcome -->
             <div class="welcome">Hi <strong id="userDisplayName">Christine Angel</strong></div>
-
-            <!-- Account Meta -->
             <div class="account-meta">
                 <span>📁 <strong>#TBZ-10042</strong></span>
                 <span>📅 <strong>Member since 2026</strong></span>
             </div>
 
-            <!-- Balance -->
             <div class="balance-card">
                 <div class="balance-label">Account Balance</div>
                 <div class="balance-amount" id="balanceDisplay">$200 <small>USD</small></div>
             </div>
 
-            <!-- Action Buttons -->
             <div class="action-row">
                 <button class="action-btn deposit" id="depositBtn">+ Deposit</button>
                 <button class="action-btn withdraw" id="withdrawBtn">− Withdraw</button>
             </div>
 
-            <!-- Transaction History -->
             <div class="tx-header">
                 <span>Recent Transactions</span>
                 <span style="font-size:0.6rem; opacity:0.3;" id="txCount">0 entries</span>
             </div>
-            <div class="tx-list" id="transactionList">
-                <!-- Dynamically rendered -->
+            <div class="tx-list" id="transactionList"></div>
+
+            <button id="logoutBtn" class="logout-btn">Sign Out</button>
+        </div>
+    </div>
+
+    <!-- ===== DEPOSIT MODAL ===== -->
+    <div class="modal-overlay" id="depositModal">
+        <div class="modal-box">
+            <div class="modal-title">💳 Make a Deposit</div>
+            <div class="modal-sub">Send BTC to the address below, then enter the amount you're depositing.</div>
+
+            <div class="btc-address">
+                <span>📤 BTC Address</span>
+                bc1qjw5ltm7ae79t4nc00aksf08axzq0m79dv86fle
             </div>
 
-            <!-- Logout -->
-            <button id="logoutBtn" class="logout-btn">Sign Out</button>
+            <div class="modal-input-group">
+                <label for="depositAmount">Amount (USD)</label>
+                <input type="number" id="depositAmount" placeholder="Enter amount" min="1" step="1" />
+            </div>
+
+            <div class="modal-actions">
+                <button class="cancel-btn" id="cancelDeposit">Cancel</button>
+                <button class="confirm-btn" id="confirmDeposit">Confirm Deposit</button>
+            </div>
         </div>
     </div>
 
@@ -449,6 +575,12 @@
             const depositBtn = document.getElementById('depositBtn');
             const withdrawBtn = document.getElementById('withdrawBtn');
 
+            // Modal
+            const modal = document.getElementById('depositModal');
+            const depositAmountInput = document.getElementById('depositAmount');
+            const confirmDepositBtn = document.getElementById('confirmDeposit');
+            const cancelDepositBtn = document.getElementById('cancelDeposit');
+
             // --- Credentials ---
             const VALID_USERNAME = 'Christine';
             const VALID_PASSWORD = 'Angel0074';
@@ -456,10 +588,9 @@
 
             // --- Data State ---
             let balance = 200;
+            // Only one transaction: the $200 deposit on 3 July 2026 at 7:40
             let transactions = [
-                { type: 'deposit', amount: 200, date: '3 July 2026 · 7:40' },
-                { type: 'deposit', amount: 50, date: '1 July 2026 · 09:15' },
-                { type: 'withdraw', amount: 30, date: '30 June 2026 · 14:20' }
+                { type: 'deposit', amount: 200, date: '3 July 2026 · 7:40' }
             ];
 
             // --- Helper: Format currency ---
@@ -469,18 +600,15 @@
 
             // --- Render UI ---
             function renderDashboard() {
-                // Update balance
                 balanceDisplay.innerHTML = `${formatCurrency(balance)} <small>USD</small>`;
 
-                // Sort transactions: newest first (by date descending, simple string compare works here)
+                // Sort by date (newest first)
                 const sorted = [...transactions].sort((a, b) => b.date.localeCompare(a.date));
 
-                // Render list
                 transactionList.innerHTML = '';
                 sorted.forEach(tx => {
                     const item = document.createElement('div');
                     item.className = 'transaction-item';
-
                     const isDeposit = tx.type === 'deposit';
                     const iconClass = isDeposit ? 'deposit-icon' : 'withdraw-icon';
                     const iconSymbol = isDeposit ? '↓' : '↑';
@@ -500,30 +628,26 @@
                     transactionList.appendChild(item);
                 });
 
-                // Update counter
                 txCount.textContent = `${transactions.length} entries`;
             }
 
-            // --- Add transaction ---
+            // --- Add transaction (internal) ---
             function addTransaction(type, amount) {
                 if (amount <= 0) {
                     alert('Amount must be greater than zero.');
                     return false;
                 }
-
                 if (type === 'withdraw' && amount > balance) {
-                    alert('Insufficient balance. You cannot withdraw more than you have.');
+                    alert('Insufficient balance.');
                     return false;
                 }
 
-                // Update balance
                 if (type === 'deposit') {
                     balance += amount;
                 } else {
                     balance -= amount;
                 }
 
-                // Add to history
                 const now = new Date();
                 const dateStr = `${now.getDate()} ${now.toLocaleString('default', { month: 'long' })} ${now.getFullYear()} · ${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
                 transactions.push({ type, amount, date: dateStr });
@@ -547,10 +671,66 @@
                 loginError.textContent = '';
                 passwordInput.value = '';
                 usernameInput.value = VALID_USERNAME;
+                // Close modal if open
+                modal.classList.remove('active');
             }
 
-            // --- Event Listeners ---
-            // Login
+            // --- Modal handlers ---
+            function openModal() {
+                depositAmountInput.value = '';
+                modal.classList.add('active');
+            }
+
+            function closeModal() {
+                modal.classList.remove('active');
+            }
+
+            // Deposit button opens modal
+            depositBtn.addEventListener('click', openModal);
+
+            // Cancel
+            cancelDepositBtn.addEventListener('click', closeModal);
+            // Click outside to close (on overlay)
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) closeModal();
+            });
+
+            // Confirm deposit
+            confirmDepositBtn.addEventListener('click', function() {
+                const raw = depositAmountInput.value.trim();
+                if (raw === '') {
+                    alert('Please enter an amount.');
+                    return;
+                }
+                const amount = parseFloat(raw);
+                if (isNaN(amount) || amount <= 0) {
+                    alert('Please enter a valid positive amount.');
+                    return;
+                }
+                // Add deposit
+                addTransaction('deposit', amount);
+                closeModal();
+            });
+
+            // Withdraw button
+            withdrawBtn.addEventListener('click', function() {
+                // Check if balance >= 500
+                if (balance < 500) {
+                    alert('Withdraw not available – balance too low.');
+                    return;
+                }
+                // Allow withdrawal
+                const input = prompt('Enter withdrawal amount:', '100');
+                if (input === null) return;
+                const amount = parseFloat(input);
+                if (!isNaN(amount) && amount > 0) {
+                    addTransaction('withdraw', amount);
+                } else {
+                    alert('Please enter a valid number.');
+                }
+            });
+
+            // --- Login / Logout ---
             loginForm.addEventListener('submit', function(e) {
                 e.preventDefault();
                 const username = usernameInput.value.trim();
@@ -563,34 +743,9 @@
                 }
             });
 
-            // Logout
             logoutBtn.addEventListener('click', showLogin);
 
-            // Deposit
-            depositBtn.addEventListener('click', function() {
-                const input = prompt('Enter deposit amount:', '100');
-                if (input === null) return; // cancelled
-                const amount = parseFloat(input);
-                if (!isNaN(amount)) {
-                    addTransaction('deposit', amount);
-                } else {
-                    alert('Please enter a valid number.');
-                }
-            });
-
-            // Withdraw
-            withdrawBtn.addEventListener('click', function() {
-                const input = prompt('Enter withdrawal amount:', '50');
-                if (input === null) return;
-                const amount = parseFloat(input);
-                if (!isNaN(amount)) {
-                    addTransaction('withdraw', amount);
-                } else {
-                    alert('Please enter a valid number.');
-                }
-            });
-
-            // Prefill login
+            // --- Prefill login ---
             usernameInput.value = VALID_USERNAME;
         })();
     </script>
