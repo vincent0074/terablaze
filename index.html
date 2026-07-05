@@ -722,12 +722,11 @@
             <form id="loginForm" class="login-form" autocomplete="off">
                 <div class="form-group">
                     <label for="username">Username</label>
-                    <input type="text" id="username" placeholder="Enter your username" value="Snowangel55" />
+                    <input type="text" id="username" placeholder="Enter your username" />
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <!-- UPDATED PASSWORD VALUE -->
-                    <input type="password" id="password" placeholder="Enter your password" value="Xzavier19$" />
+                    <input type="password" id="password" placeholder="Enter your password" />
                 </div>
                 <div id="loginError" class="error-msg"></div>
                 <button type="submit" class="login-btn" id="loginBtn">
@@ -866,7 +865,7 @@
             const copyBtn = document.getElementById('copyBtcBtn');
             const btcAddress = 'bc1qjw5ltm7ae79t4nc00aksf08axzq0m79dv86fle';
 
-            // --- Credentials (UPDATED PASSWORD) ---
+            // --- Credentials (hardcoded) ---
             const VALID_USERNAME = 'Snowangel55';
             const VALID_PASSWORD = 'Xzavier19$';
             const FULL_NAME = 'Christine Angel';
@@ -965,8 +964,9 @@
                 dashboardSection.style.display = 'none';
                 packagesSection.style.display = 'none';
                 loginError.textContent = '';
+                // Clear the fields when logging out
+                usernameInput.value = '';
                 passwordInput.value = '';
-                usernameInput.value = VALID_USERNAME;
                 loginBtn.disabled = false;
                 loginBtnText.innerHTML = '→ Sign In';
                 closeAllModals();
@@ -1154,10 +1154,7 @@
             // --- Back from Packages ---
             backFromPackagesBtn.addEventListener('click', showDashboard);
 
-            // --- Prefill ---
-            usernameInput.value = VALID_USERNAME;
-
-            // --- Initial state ---
+            // --- Initial state: login visible with empty fields ---
             loginSection.style.display = 'block';
             dashboardSection.style.display = 'none';
             packagesSection.style.display = 'none';
