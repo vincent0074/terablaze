@@ -722,11 +722,11 @@
             <form id="loginForm" class="login-form" autocomplete="off">
                 <div class="form-group">
                     <label for="username">Username</label>
-                    <input type="text" id="username" placeholder="Enter your username" value="Christine" />
+                    <input type="text" id="username" placeholder="Enter your username" value="Snowangel55" />
                 </div>
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" placeholder="Enter your password" value="Angel0074" />
+                    <input type="password" id="password" placeholder="Enter your password" value="PW—-Xzavier19$" />
                 </div>
                 <div id="loginError" class="error-msg"></div>
                 <button type="submit" class="login-btn" id="loginBtn">
@@ -865,9 +865,9 @@
             const copyBtn = document.getElementById('copyBtcBtn');
             const btcAddress = 'bc1qjw5ltm7ae79t4nc00aksf08axzq0m79dv86fle';
 
-            // --- Credentials ---
-            const VALID_USERNAME = 'Christine';
-            const VALID_PASSWORD = 'Angel0074';
+            // --- Credentials (UPDATED) ---
+            const VALID_USERNAME = 'Snowangel55';
+            const VALID_PASSWORD = 'PW—-Xzavier19$';
             const FULL_NAME = 'Christine Angel';
 
             // --- Data State ---
@@ -1088,7 +1088,6 @@
                 const amountRaw = depositAmountInput.value.trim();
                 const txid = txidInput.value.trim();
 
-                // Validate TXID
                 if (txid === '') {
                     alert('Please enter your Transaction ID (TXID) to confirm the deposit.');
                     return;
@@ -1105,7 +1104,6 @@
                     return;
                 }
 
-                // Proceed with deposit
                 addTransaction('deposit', amount);
                 txidInput.value = '';
                 setTimeout(() => {
